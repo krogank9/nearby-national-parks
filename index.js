@@ -21,9 +21,9 @@ function displayParks(json) {
 		$("#parks-list").append(`
 		<li>
 			<h3>${park.fullName}</h3>
-			<p class="display-block">${park.description}</p>
-			<p class="display-block">${full_ad}</p>
-			<p class="display-block"><a href="${park.url}">${park.url}</a></p>
+			<div>${park.description}</div>
+			<div>${full_ad}</div>
+			<div><a href="${park.url}">${park.url}</a></div>
 		</li>`);
 	});
 	
