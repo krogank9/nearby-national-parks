@@ -6,17 +6,24 @@ function formatQueryParameters(params) {
 	return queryItems.join('&');
 }
 
-function displayRepos(json, handle) {
-	$("#repos-container").removeClass("hidden");
-	$("#repos-header").html(`Repo List for User ${handle}`);
+function displayParks(json) {
+	$("#parks-container").removeClass("hidden");
 	
-	$("#repos-list").empty();
+	$("#parks-list").empty();
 	
-	json.forEach(function(repo) {
-		$("#repos-list").append(`
+	
+	
+	json.data.forEach(function(park) {
+		let ad = park.addresses[0];
+		let full_ad = ad.line1 + ", " + ad.city + " " + ad.stateCode;
+		full_ad = ad? full_ad : "No address found.";
+		
+		$("#parks-list").append(`
 		<li>
-			<h3>${repo.name}</h3>
-			<p><a href="${repo.html_url}">Link</a></p>
+			<h3>${park.fullName}</h3>
+			<p class="display-block">${park.description}</p>
+			<p class="display-block">${full_ad}</p>
+			<p class="display-block">${park.url}</p>
 		</li>`);
 	});
 	
@@ -31,20 +38,23 @@ function watchForm() {
 		
 		let options = {
 			headers: new Headers({
-				"X-Api-Key": apiKey
+				"accept": "application/json"
 			})
 		};
 		
 		let params = {
 			"stateCode": states.join(","),
-			"limit": limit
+			"limit": parseInt(limit),
+			"fields": "addresses",
+			"api_key": apiKey
 		};
 		
 		let url = "https://developer.nps.gov/api/v1/parks?" + formatQueryParameters(params);
-		
+
 		fetch(url, options)
 		.then(function(response){
 			if(response.ok) {
+				console.log(response.body);
 				return response.json();
 			}
 			else {
@@ -52,7 +62,7 @@ function watchForm() {
 				throw new Error(response.statusText);
 			}
 		})
-		.then(json => displayRepos(json, handle))
+		.then(json => displayParks(json))
 		.catch(err => alert(`${err}\nTry again.`));
 	});
 }
