@@ -27,16 +27,17 @@ function watchForm() {
 	$("form").submit(function(event){
 		event.preventDefault();
 		let states = $("#state-select").val();
+		let limit = $("#max-results").val();
 		
 		let options = {
-			method: "get",
 			headers: new Headers({
 				"X-Api-Key": apiKey
 			})
 		};
 		
 		let params = {
-			"stateCode": states.join(",")
+			"stateCode": states.join(","),
+			"limit": limit
 		};
 		
 		let url = "https://developer.nps.gov/api/v1/parks?" + formatQueryParameters(params);
