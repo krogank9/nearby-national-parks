@@ -23,7 +23,7 @@ function displayParks(json) {
 			<h3>${park.fullName}</h3>
 			<p class="display-block">${park.description}</p>
 			<p class="display-block">${full_ad}</p>
-			<p class="display-block">${park.url}</p>
+			<p class="display-block"><a href="${park.url}">${park.url}</a></p>
 		</li>`);
 	});
 	
